@@ -156,6 +156,7 @@ export async function extract7z(
   dest?: string,
   _7zPath?: string
 ): Promise<string> {
+  core.notice('Why am I in extract7z()!!')
   ok(IS_WINDOWS, 'extract7z() not supported on current OS')
   ok(file, 'parameter "file" is required')
 
