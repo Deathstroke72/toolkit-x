@@ -151,67 +151,67 @@ async function downloadToolAttempt(
  * to 7zr.exe can be pass to this function.
  * @returns        path to the destination directory
  */
-export async function extract7z(
-  file: string,
-  dest?: string,
-  _7zPath?: string
-): Promise<string> {
-  core.notice('Why am I in extract7z()!!')
-  ok(IS_WINDOWS, 'extract7z() not supported on current OS')
-  ok(file, 'parameter "file" is required')
+// export async function extract7z(
+//   file: string,
+//   dest?: string,
+//   _7zPath?: string
+// ): Promise<string> {
+//   core.notice('Why am I in extract7z()!!')
+//   ok(IS_WINDOWS, 'extract7z() not supported on current OS')
+//   ok(file, 'parameter "file" is required')
 
-  dest = await _createExtractFolder(dest)
+//   dest = await _createExtractFolder(dest)
 
-  const originalCwd = process.cwd()
-  process.chdir(dest)
-  if (_7zPath) {
-    try {
-      const logLevel = core.isDebug() ? '-bb1' : '-bb0'
-      const args: string[] = [
-        'x', // eXtract files with full paths
-        logLevel, // -bb[0-3] : set output log level
-        '-bd', // disable progress indicator
-        '-sccUTF-8', // set charset for for console input/output
-        file
-      ]
-      const options: ExecOptions = {
-        silent: true
-      }
-      await exec(`"${_7zPath}"`, args, options)
-    } finally {
-      process.chdir(originalCwd)
-    }
-  } else {
-    const escapedScript = path
-      .join(__dirname, '..', 'scripts', 'Invoke-7zdec.ps1')
-      .replace(/'/g, "''")
-      .replace(/"|\n|\r/g, '') // double-up single quotes, remove double quotes and newlines
-    const escapedFile = file.replace(/'/g, "''").replace(/"|\n|\r/g, '')
-    const escapedTarget = dest.replace(/'/g, "''").replace(/"|\n|\r/g, '')
-    const command = `& '${escapedScript}' -Source '${escapedFile}' -Target '${escapedTarget}'`
-    const args: string[] = [
-      '-NoLogo',
-      '-Sta',
-      '-NoProfile',
-      '-NonInteractive',
-      '-ExecutionPolicy',
-      'Unrestricted',
-      '-Command',
-      command
-    ]
-    const options: ExecOptions = {
-      silent: true
-    }
-    try {
-      const powershellPath: string = await io.which('powershell', true)
-      await exec(`"${powershellPath}"`, args, options)
-    } finally {
-      process.chdir(originalCwd)
-    }
-  }
+//   const originalCwd = process.cwd()
+//   process.chdir(dest)
+//   if (_7zPath) {
+//     try {
+//       const logLevel = core.isDebug() ? '-bb1' : '-bb0'
+//       const args: string[] = [
+//         'x', // eXtract files with full paths
+//         logLevel, // -bb[0-3] : set output log level
+//         '-bd', // disable progress indicator
+//         '-sccUTF-8', // set charset for for console input/output
+//         file
+//       ]
+//       const options: ExecOptions = {
+//         silent: true
+//       }
+//       await exec(`"${_7zPath}"`, args, options)
+//     } finally {
+//       process.chdir(originalCwd)
+//     }
+//   } else {
+//     const escapedScript = path
+//       .join(__dirname, '..', 'scripts', 'Invoke-7zdec.ps1')
+//       .replace(/'/g, "''")
+//       .replace(/"|\n|\r/g, '') // double-up single quotes, remove double quotes and newlines
+//     const escapedFile = file.replace(/'/g, "''").replace(/"|\n|\r/g, '')
+//     const escapedTarget = dest.replace(/'/g, "''").replace(/"|\n|\r/g, '')
+//     const command = `& '${escapedScript}' -Source '${escapedFile}' -Target '${escapedTarget}'`
+//     const args: string[] = [
+//       '-NoLogo',
+//       '-Sta',
+//       '-NoProfile',
+//       '-NonInteractive',
+//       '-ExecutionPolicy',
+//       'Unrestricted',
+//       '-Command',
+//       command
+//     ]
+//     const options: ExecOptions = {
+//       silent: true
+//     }
+//     try {
+//       const powershellPath: string = await io.which('powershell', true)
+//       await exec(`"${powershellPath}"`, args, options)
+//     } finally {
+//       process.chdir(originalCwd)
+//     }
+//   }
 
-  return dest
-}
+//   return dest
+// }
 
 /**
  * Extract a compressed tar archive
