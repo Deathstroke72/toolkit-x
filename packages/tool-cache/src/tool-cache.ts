@@ -228,7 +228,7 @@ export async function extractTar(
   if (!file) {
     throw new Error("parameter 'file' is required")
   }
-  core.debug('This is the extractTar function.')
+  core.notice('This is the extractTar function.')
   // Create dest
   dest = await _createExtractFolder(dest)
 
